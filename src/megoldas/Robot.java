@@ -1,24 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package megoldas;
 
+/**
+ *
+ * @author Paksi Norbert
+ */
 import java.util.Random;
 
 public class Robot {
 
     private String nev;
     private String szin;
-    private int eletero;
+    private Integer eletero;
+    private int maxEletero;
     private boolean harcose;
-    private int sebzes;
+    private Integer sebzes;
 
     public Robot(String nev, String szin, int eletero, boolean harcose, int sebzes) {
         this.nev = nev;
         this.szin = szin;
         this.eletero = eletero;
+        this.maxEletero = eletero;
         this.harcose = harcose;
         this.sebzes = sebzes;
     }
@@ -47,6 +48,14 @@ public class Robot {
         this.eletero = eletero;
     }
 
+    public int getMaxEletero() {
+        return maxEletero;
+    }
+
+    public void setMaxEletero(int maxEletero) {
+        this.maxEletero = maxEletero;
+    }
+
     public boolean isHarcose() {
         return harcose;
     }
@@ -64,40 +73,46 @@ public class Robot {
     }
 
     public static boolean Harcosok(Robot robot1, Robot robot2) {
-
-        if (robot1.harcose && robot2.harcose) {
-            return true;
-        } else {
-            return false;
-        }
+        return robot1.harcose && robot2.harcose;
     }
 
-    public static String Kezdorobot(Robot robot1, Robot robot2) {
-        if (robot1.eletero > robot2.eletero) {
+    public static Robot Kezdorobot(Robot robot1, Robot robot2) {
+        /*
+        Vizsgálatok száma
+        if (robot1.eletero > robot2.eletero) { // 1. vizsgálat
             return "robot2";
-        } else if (robot1.eletero < robot2.eletero) {
+        } else if (robot1.eletero < robot2.eletero) { // 2. vizsgálat
             return "robot1";
         } else {
-            if (robot1.sebzes > robot2.sebzes) {
+            if (robot1.sebzes > robot2.sebzes) { // 3. vizsgálat
                 return "robot1";
-            } else if (robot1.sebzes < robot2.sebzes) {
+            } else if (robot1.sebzes < robot2.sebzes) { // 4. vizsgálat
                 return "robot2";
             } else {
                 int szam1 = randomszam();
                 int szam2 = randomszam();
                 if (szam1 > szam2) {
-                    return "robot1";
+                    return "robot1"; // 5. vizsgálat
                 } else {
-                    return "robot2";
+                    return "robot2"; // 5. vizsgálat
                 }
 
             }
         }
+         */
+
+        if ((robot2.eletero > robot1.eletero)
+                || (robot1.eletero.equals(robot2.eletero)) && robot1.sebzes > robot2.sebzes
+                || (robot1.eletero.equals(robot2.eletero)) && robot1.sebzes.equals(robot2.sebzes) && Robot.randomszam(2) == 0) {
+            return robot1; // 1 vagy 3 vizsgálat
+        } else {
+            return robot2; // 1 vagy 3 vizsgálat
+        }
     }
 
-    public static int randomszam() {
+    public static int randomszam(int max) {
         Random random = new Random();
-        int x = random.nextInt();
+        int x = random.nextInt(max);
         return x;
     }
 
@@ -105,34 +120,46 @@ public class Robot {
         return (int) Math.floor(Math.random() * (ig - tol + 1) + tol);
     }
 
-    public int sebzes(Robot robot) {
-        return veletlenEgeszSzam(0, this.sebzes);
+    public int sebzes() {
+        return randomszam(this.sebzes + 1);
     }
 
-    public void Tamadas(Robot robot) {
-        int damage = this.sebzes(robot);
-        robot.setEletero(robot.getEletero() - damage);
+    public void Tamadas(Robot szenvedo) {
 
-        Gyogyulas(damage);
+        // A támadó robot
+        int damage = this.sebzes(); // 4
+
+        System.out.print(this.nev + " megtámadja " + szenvedo.nev + " és " + damage + " sebzést okoz neki.");
+        szenvedo.setEletero(szenvedo.getEletero() - damage); // 30-4
+
+        System.out.println(" " + szenvedo.nev + " életerejee " + szenvedo.getEletero() + " let.");
+
+        // Minden támadás után gyógyulnak a robotok
+        this.Gyogyulas(damage);
     }
 
     public void Gyogyulas(int damage) {
         if (damage == this.sebzes) {
-            this.setEletero(this.getEletero() + 2);
+            this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
+
+            System.out.println(this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero);
+            if (this.eletero > this.maxEletero) {
+                this.eletero = this.maxEletero;
+            }
         }
 
     }
 
     public static void Harc(Robot robot1, Robot robot2) {
         if (Harcosok(robot1, robot2)) {
-            String kezdorobot = Kezdorobot(robot1, robot2);
-            boolean igaz = true;
-            while (igaz) {
-                if (kezdorobot.equals("robot1")) {
+            Robot kezdorobot = Kezdorobot(robot1, robot2);
+            boolean jatek = true;
+            while (jatek) {
+                if (kezdorobot.equals(robot1)) {
                     robot1.Tamadas(robot2);
                     if (robot2.eletero <= 0) {
                         System.out.println("Gyöztes: " + robot1.nev);
-                        igaz = false;
+                        jatek = false;
                     } else {
                         robot2.Tamadas(robot1);
                     }
@@ -141,7 +168,7 @@ public class Robot {
                     robot2.Tamadas(robot1);
                     if (robot1.eletero <= 0) {
                         System.out.println("Gyöztes: " + robot2.nev);
-                        igaz = false;
+                        jatek = false;
                     } else {
                         robot1.Tamadas(robot2);
                     }
@@ -150,6 +177,8 @@ public class Robot {
 
             }
 
+        } else {
+            System.out.println("Az egyik robot nem harcos.");
         }
 
     }
