@@ -1,5 +1,7 @@
 package megoldas;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Paksi Norbert
@@ -7,10 +9,18 @@ package megoldas;
 public class Robotharc {
 
     public static void main(String[] args) {
-        Robot robot1 = new Robot("kecsketron", "fekete", 55, true, 5);
-        Robot robot2 = new Robot("elektron", "fehér", 35, true, 15);
+        ArrayList<Robot> robotok = new ArrayList<>();
+        
+        robotok.add(new Robot("Robi", "piros", 100, true, 10));
+        robotok.add(new Robot("Zsolti", "zöld", 80, true, 5));
+        robotok.add(new Robot("Laci", "kék", 120, true, 15));
+        robotok.add(new Robot("Anna", "fehér", 90, true, 7));
+        robotok.add(new Robot("Béla", "narancssárga", 110, true, 12));
+        robotok.add(new Robot("Tibi", "fekete", 70, true, 3));
+        robotok.add(new Robot("Judit", "lila", 95, true, 9));
+        robotok.add(new Robot("Gabi", "sárga", 130, true, 18));
 
-        Robot.Harc(robot1, robot2);
+        Robot.Robotbajnoksag(robotok);
     }
 
 }

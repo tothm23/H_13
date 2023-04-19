@@ -4,6 +4,7 @@ package megoldas;
  *
  * @author Paksi Norbert
  */
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Robot {
@@ -129,20 +130,20 @@ public class Robot {
         // A támadó robot
         int damage = this.sebzes(); // 4
 
-        System.out.print(this.nev + " megtámadja " + szenvedo.nev + " és " + damage + " sebzést okoz neki.");
+        System.out.print("🔥 " + this.nev + " megtámadja " + szenvedo.nev + " és " + damage + " sebzést okoz");
         szenvedo.setEletero(szenvedo.getEletero() - damage); // 30-4
 
-        System.out.println(" " + szenvedo.nev + " életerejee " + szenvedo.getEletero() + " let.");
+        System.out.println(" " + szenvedo.nev + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
-        this.Gyogyulas(damage);
+        Gyogyulas(damage);
     }
 
     public void Gyogyulas(int damage) {
         if (damage == this.sebzes) {
             this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
 
-            System.out.println(this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero);
+            System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
             if (this.eletero > this.maxEletero) {
                 this.eletero = this.maxEletero;
             }
@@ -179,7 +180,106 @@ public class Robot {
 
         } else {
             System.out.println("Az egyik robot nem harcos.");
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Megállapítja a jelenlegi fordulő győztesét
+     *
+     * @param robot1
+     * @param robot2
+     * @return
+     */
+    public static Robot Gyoztes(Robot robot1, Robot robot2) {
+
+        if (Harcosok(robot1, robot2)) {
+
+            Robot kezdorobot = Kezdorobot(robot1, robot2);
+            boolean jatek = true;
+
+            while (jatek) {
+                if (kezdorobot.equals(robot1)) {
+                    robot1.Tamadas(robot2);
+
+                    if (robot2.eletero <= 0) {
+                        jatek = false;
+                        return robot1;
+                    } else {
+                        robot2.Tamadas(robot1);
+                    }
+
+                } else {
+                    robot2.Tamadas(robot1);
+
+                    if (robot1.eletero <= 0) {
+                        jatek = false;
+                        return robot2;
+                    } else {
+                        robot1.Tamadas(robot2);
+                    }
+
+                }
+
+            }
+
+        } else {
+            System.out.println("Az egyik robot nem harcos.");
+            System.exit(0);
+        }
+
+        return null;
+
+    }
+
+    public static void Robotbajnoksag(ArrayList<Robot> robotok) {
+
+        boolean bajnoksag = true;
+
+        for (Robot robot : robotok) {
+
+            // Ha van akár 1 olyan robot, amelyik nem harcos
+            if (!robot.isHarcose()) {
+
+                // Akkor nem lesz bajnokság
+                bajnoksag = false;
+            }
+        }
+        // CSak akkor lehet bajnokság, ha minden robot harcos
+        if (bajnoksag) {
+            // A robotok akik bejutottak al elődöntőbe 5 életet kapnak
+            Robot elodontosA = Gyoztes(robotok.get(0), robotok.get(1));
+            elodontosA.setEletero(elodontosA.getEletero() + 5);
+            System.out.println("🏆  Az 1. elődöntős " + elodontosA.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosA.getEletero() + " lett\n");
+
+            Robot elodontosB = Gyoztes(robotok.get(2), robotok.get(3));
+            elodontosB.setEletero(elodontosB.getEletero() + 5);
+            System.out.println("🏆 A 2. elődöntős " + elodontosB.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosB.getEletero() + " lett\n");
+
+            Robot elodontosC = Gyoztes(robotok.get(4), robotok.get(5));
+            elodontosC.setEletero(elodontosC.getEletero() + 5);
+            System.out.println("🏆 A 3. elődöntős " + elodontosC.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosC.getEletero() + " lett\n");
+
+            Robot elodontosD = Gyoztes(robotok.get(6), robotok.get(7));
+            elodontosD.setEletero(elodontosD.getEletero() + 5);
+            System.out.println("🏆 A 4. elődöntős " + elodontosD.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosD.getEletero() + " lett\n");
+
+            // A robotok akik bejutottak al döntőbe 5 életet kapnak
+            Robot dontosA = Gyoztes(elodontosA, elodontosB);
+            dontosA.setEletero(dontosA.getEletero() + 5);
+            System.out.println("🏆 Az 1. döntős " + dontosA.getNev() + ", aki kap 5 életerőt, így életereje " + dontosA.getEletero() + " lett\n");
+
+            Robot dontosB = Gyoztes(elodontosC, elodontosD);
+            dontosB.setEletero(dontosB.getEletero() + 5);
+            System.out.println("🏆 A 2. döntős " + dontosB.getNev() + ", aki kap 5 életerőt, így életereje " + dontosB.getEletero() + " lett\n");
+
+            Robot gyoztes = Gyoztes(dontosA, dontosB);
+
+            System.out.println("\n🏆🏆🏆🏆🏆 🏆🏆🏆🏆🏆 🏆🏆🏆🏆🏆 🏆🏆🏆🏆🏆");
+            System.out.println("🏆  A bajnok nem más, mint " + gyoztes.getNev() + " !  🏆");
+            System.out.println("🏆🏆🏆🏆🏆 🏆🏆🏆🏆🏆 🏆🏆🏆🏆🏆 🏆🏆🏆🏆🏆\n");
         }
 
     }
+
 }
