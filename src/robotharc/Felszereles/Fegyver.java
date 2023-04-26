@@ -1,4 +1,4 @@
-package megoldas.Felszereles;
+package robotharc.Felszereles;
 
 /**
  *

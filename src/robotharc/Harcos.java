@@ -1,6 +1,6 @@
-package megoldas;
+package robotharc;
 
-import megoldas.Felszereles.Fegyver;
+import robotharc.Felszereles.Fegyver;
 
 /**
  *

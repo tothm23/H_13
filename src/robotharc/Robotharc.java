@@ -1,4 +1,4 @@
-package megoldas;
+package robotharc;
 
 /**
  *
@@ -6,7 +6,7 @@ package megoldas;
  *
  */
 import java.util.ArrayList;
-import megoldas.Felszereles.Fegyver;
+import robotharc.Felszereles.Fegyver;
 
 /**
  *

@@ -1,7 +1,7 @@
-package megoldas;
+package robotharc;
 
 import java.util.Random;
-import megoldas.Felszereles.Fegyver;
+import robotharc.Felszereles.Fegyver;
 
 /**
  *
