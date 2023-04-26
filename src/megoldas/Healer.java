@@ -3,23 +3,23 @@ package megoldas;
 /**
  *
  * @author Tóth Milán
- *
  */
-public class Harcos extends Robot {
+public class Healer extends Robot {
 
-    public Harcos(String nev, String szin, Integer eletero, Boolean harcos, Integer sebzes) {
-        super(nev, szin, eletero, harcos, sebzes);
+    public Healer(String nev, String szin, int eletero, boolean harcose, int sebzes) {
+        super(nev, szin, eletero, harcose, sebzes);
     }
 
     @Override
     public void Tamadas(Robot szenvedo) {
         int sebzes = this.sebzes();
-        int random = Robot.randomszam(10);
+        int random = Robot.randomszam(20);
 
         if (random == 2) {
-            sebzes += 2;
-            System.out.println("Kritikus sebzés");
+            System.out.println("Extra gyógyulás");
+            this.Gyogyulas(sebzes, 3);
         } else {
+            this.Gyogyulas(sebzes, 2);
         }
 
         System.out.print("🔥 " + this.getNev() + " megtámadja " + szenvedo.getNev() + " és " + sebzes + " sebzést okoz");
@@ -27,7 +27,5 @@ public class Harcos extends Robot {
 
         System.out.println(" " + szenvedo.getNev() + " életereje " + szenvedo.getEletero() + " lett");
 
-        // Minden támadás után gyógyulnak a robotok
-        this.Gyogyulas(sebzes, 2);
     }
 }

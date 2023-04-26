@@ -141,12 +141,12 @@ public abstract class Robot {
         System.out.println(" " + szenvedo.nev + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
-        Gyogyulas(damage);
+        Gyogyulas(damage, 2);
     }
 
-    public void Gyogyulas(int damage) {
+    public void Gyogyulas(int damage, int heal) {
         if (damage == this.sebzes) {
-            this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
+            this.setEletero(this.getEletero() + heal);  // Max 40, Aktuális 32
 
             System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
             if (this.eletero > this.maxEletero) {
