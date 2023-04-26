@@ -7,7 +7,7 @@ package megoldas;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Robot {
+public abstract class Robot {
 
     private String nev;
     private String szin;
@@ -131,7 +131,12 @@ public class Robot {
         int damage = this.sebzes(); // 4
 
         System.out.print("🔥 " + this.nev + " megtámadja " + szenvedo.nev + " és " + damage + " sebzést okoz");
-        szenvedo.setEletero(szenvedo.getEletero() - damage); // 30-4
+
+        if (szenvedo.getEletero() - damage >= 0) {
+            szenvedo.setEletero(szenvedo.getEletero() - damage); // 30-4
+        } else {
+            return;
+        }
 
         System.out.println(" " + szenvedo.nev + " életereje " + szenvedo.getEletero() + " lett");
 
@@ -202,7 +207,7 @@ public class Robot {
                 if (kezdorobot.equals(robot1)) {
                     robot1.Tamadas(robot2);
 
-                    if (robot2.eletero <= 0) {
+                    if (robot2.getEletero() <= 0) {
                         jatek = false;
                         return robot1;
                     } else {
@@ -212,7 +217,7 @@ public class Robot {
                 } else {
                     robot2.Tamadas(robot1);
 
-                    if (robot1.eletero <= 0) {
+                    if (robot1.getEletero() <= 0) {
                         jatek = false;
                         return robot2;
                     } else {
@@ -250,28 +255,28 @@ public class Robot {
             // A robotok akik bejutottak al elődöntőbe 5 életet kapnak
             Robot elodontosA = Gyoztes(robotok.get(0), robotok.get(1));
             elodontosA.setEletero(elodontosA.getEletero() + 5);
-            System.out.println("🏆  Az 1. elődöntős " + elodontosA.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosA.getEletero() + " lett\n");
+            System.out.println("\n🏆  Az 1. elődöntős " + elodontosA.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosA.getEletero() + " lett\n");
 
             Robot elodontosB = Gyoztes(robotok.get(2), robotok.get(3));
             elodontosB.setEletero(elodontosB.getEletero() + 5);
-            System.out.println("🏆 A 2. elődöntős " + elodontosB.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosB.getEletero() + " lett\n");
+            System.out.println("\n🏆 A 2. elődöntős " + elodontosB.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosB.getEletero() + " lett\n");
 
             Robot elodontosC = Gyoztes(robotok.get(4), robotok.get(5));
             elodontosC.setEletero(elodontosC.getEletero() + 5);
-            System.out.println("🏆 A 3. elődöntős " + elodontosC.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosC.getEletero() + " lett\n");
+            System.out.println("\n🏆 A 3. elődöntős " + elodontosC.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosC.getEletero() + " lett\n");
 
             Robot elodontosD = Gyoztes(robotok.get(6), robotok.get(7));
             elodontosD.setEletero(elodontosD.getEletero() + 5);
-            System.out.println("🏆 A 4. elődöntős " + elodontosD.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosD.getEletero() + " lett\n");
+            System.out.println("\n🏆 A 4. elődöntős " + elodontosD.getNev() + ", aki kap 5 életerőt, így életereje " + elodontosD.getEletero() + " lett\n");
 
             // A robotok akik bejutottak al döntőbe 5 életet kapnak
             Robot dontosA = Gyoztes(elodontosA, elodontosB);
             dontosA.setEletero(dontosA.getEletero() + 5);
-            System.out.println("🏆 Az 1. döntős " + dontosA.getNev() + ", aki kap 5 életerőt, így életereje " + dontosA.getEletero() + " lett\n");
+            System.out.println("\n🏆 Az 1. döntős " + dontosA.getNev() + ", aki kap 5 életerőt, így életereje " + dontosA.getEletero() + " lett\n");
 
             Robot dontosB = Gyoztes(elodontosC, elodontosD);
             dontosB.setEletero(dontosB.getEletero() + 5);
-            System.out.println("🏆 A 2. döntős " + dontosB.getNev() + ", aki kap 5 életerőt, így életereje " + dontosB.getEletero() + " lett\n");
+            System.out.println("\n🏆 A 2. döntős " + dontosB.getNev() + ", aki kap 5 életerőt, így életereje " + dontosB.getEletero() + " lett\n");
 
             Robot gyoztes = Gyoztes(dontosA, dontosB);
 
