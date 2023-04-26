@@ -1,5 +1,7 @@
 package megoldas;
 
+import megoldas.Felszereles.Fegyver;
+
 /**
  *
  * @author Tóth Milán
@@ -7,14 +9,14 @@ package megoldas;
  */
 public class Ninja extends Robot {
 
-    public Ninja(String nev, String szin, int eletero, boolean harcose, int sebzes) {
-        super(nev, szin, eletero, harcose, sebzes);
+    public Ninja(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
+        super(nev, szin, eletero, harcose, sebzes, fegyver);
     }
 
     @Override
     public void Tamadas(Robot szenvedo) {
         int sebzes = this.sebzes();
-        int random = Robot.randomszam(10);
+        int random = Robot.randomszam(10);  // 0-9
 
         if (random == 2) {
             sebzes = 0;

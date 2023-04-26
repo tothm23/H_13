@@ -1,15 +1,33 @@
 package megoldas;
 
+import java.util.Random;
+import megoldas.Felszereles.Fegyver;
+
 /**
  *
  * @author Tóth Milán
  */
 public class Healer extends Robot {
 
-    public Healer(String nev, String szin, int eletero, boolean harcose, int sebzes) {
-        super(nev, szin, eletero, harcose, sebzes);
+    public Healer(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
+        super(nev, szin, eletero, harcose, sebzes, fegyver);
     }
 
+    /*
+        @Override
+    public void setEletero(int eletero) {
+        Random rand = new Random();
+        int generated = rand.nextInt(20);
+
+        if(generated == 4 && eletero != this.maxEletero){
+            eletero += 3;
+            System.err.println("KAPTÁL 3 ÉLETERŐT");
+        }else{
+            this.eletero = eletero;
+        }
+    }
+     */
+ /*
     @Override
     public void Tamadas(Robot szenvedo) {
         int sebzes = this.sebzes();
@@ -26,6 +44,24 @@ public class Healer extends Robot {
         szenvedo.setEletero(szenvedo.getEletero() - sebzes); // 30-4
 
         System.out.println(" " + szenvedo.getNev() + " életereje " + szenvedo.getEletero() + " lett");
+
+    }
+     */
+    public void Gyogyulas(int damage) {
+        if (damage == this.ero) {
+            this.setEletero(this.getEletero() + 2); // Max 40, Aktuális 48
+            if (this.eletero > this.maxEletero) {
+                this.eletero = this.maxEletero;
+            }
+            System.out.println(this.nev + " maxout sebzett, ezért gyógyult. új életereje: " + this.eletero);
+        }
+
+        Random rand = new Random();
+        int generated = rand.nextInt(20);
+        if (generated == 4 && eletero != this.maxEletero) {
+            eletero += 3;
+            System.err.println("KAPTÁL 3 ÉLETERŐT");
+        }
 
     }
 }

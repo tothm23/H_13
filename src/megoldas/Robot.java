@@ -6,23 +6,29 @@ package megoldas;
  */
 import java.util.ArrayList;
 import java.util.Random;
+import megoldas.Felszereles.Fegyver;
 
 public abstract class Robot {
 
-    private String nev;
-    private String szin;
-    private Integer eletero;
-    private int maxEletero;
-    private boolean harcose;
-    private Integer sebzes;
+    protected String nev;
+    protected String szin;
+    protected Integer eletero;
+    protected int maxEletero;
+    protected boolean harcose;
+    protected Integer ero;
 
-    public Robot(String nev, String szin, int eletero, boolean harcose, int sebzes) {
+    // páncél/védelmi pont (nem muszály, leht 0))
+    // tárgyak
+    protected Fegyver fegyver;
+
+    public Robot(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
         this.nev = nev;
         this.szin = szin;
-        this.eletero = eletero;
+        this.eletero = eletero; // bemenő paraméter + páncél által adott életerő
         this.maxEletero = eletero;
         this.harcose = harcose;
-        this.sebzes = sebzes;
+        this.ero = sebzes;
+        this.fegyver = fegyver;
     }
 
     public String getNev() {
@@ -65,18 +71,32 @@ public abstract class Robot {
         this.harcose = harcose;
     }
 
-    public int getSebzes() {
-        return sebzes;
+    public int getEro() {
+        return ero;
     }
 
-    public void setSebzes(int sebzes) {
-        this.sebzes = sebzes;
+    public void setEro(int sebzes) {
+        this.ero = sebzes;
     }
 
+    /**
+     * Megállapítja, hogy mindkét robot harcos-e
+     *
+     * @param robot1
+     * @param robot2
+     * @return
+     */
     public static boolean Harcosok(Robot robot1, Robot robot2) {
         return robot1.harcose && robot2.harcose;
     }
 
+    /**
+     * Kisorsoljuk a kezdő robotot
+     *
+     * @param robot1
+     * @param robot2
+     * @return
+     */
     public static Robot Kezdorobot(Robot robot1, Robot robot2) {
         /*
         Vizsgálatok száma
@@ -85,9 +105,9 @@ public abstract class Robot {
         } else if (robot1.eletero < robot2.eletero) { // 2. vizsgálat
             return "robot1";
         } else {
-            if (robot1.sebzes > robot2.sebzes) { // 3. vizsgálat
+            if (robot1.ero > robot2.ero) { // 3. vizsgálat
                 return "robot1";
-            } else if (robot1.sebzes < robot2.sebzes) { // 4. vizsgálat
+            } else if (robot1.ero < robot2.ero) { // 4. vizsgálat
                 return "robot2";
             } else {
                 int szam1 = randomszam();
@@ -103,26 +123,55 @@ public abstract class Robot {
          */
 
         if ((robot2.eletero > robot1.eletero)
-                || (robot1.eletero.equals(robot2.eletero)) && robot1.sebzes > robot2.sebzes
-                || (robot1.eletero.equals(robot2.eletero)) && robot1.sebzes.equals(robot2.sebzes) && Robot.randomszam(2) == 0) {
+                || (robot1.eletero.equals(robot2.eletero)) && robot1.ero > robot2.ero
+                || (robot1.eletero.equals(robot2.eletero)) && robot1.ero.equals(robot2.ero) && Robot.randomszam(2) == 0) {
             return robot1; // 1 vagy 3 vizsgálat
         } else {
             return robot2; // 1 vagy 3 vizsgálat
         }
     }
 
+    /**
+     * Visszaad egy egész számot
+     *
+     * @param max
+     * @return
+     */
     public static int randomszam(int max) {
         Random random = new Random();
         int x = random.nextInt(max);
         return x;
     }
 
+    /**
+     * Visszaad egy egész számot a megadott tartomány szerint
+     *
+     * @param tol
+     * @param ig
+     * @return
+     */
     public static int veletlenEgeszSzam(int tol, int ig) {
         return (int) Math.floor(Math.random() * (ig - tol + 1) + tol);
     }
 
     public int sebzes() {
-        return randomszam(this.sebzes + 1);
+        //return randomszam(this.ero + 1);
+
+        // Fegyver miatt megváltoztatott verzió
+        int sebzes = randomszam(this.ero + 1);  // 0 és karakter közötti random szám generálás
+        sebzes += this.fegyver.getEro();    // A korábbi értékhez hozzáadjuk a fegyver erő tulajdonságát
+
+        int max = this.fegyver.getMaximumSebzes();  // 18
+        int min = this.fegyver.getMinimumSebzes();  // 12  
+        int range = max - min;  // 6
+
+        int fegyverSebzes = randomszam(range + 1);  // 0-5
+        fegyverSebzes += min;   // 0-6 + 12 -> 12 - 18
+
+        sebzes += fegyverSebzes;   // Az erő értékekből számolt fix sebzéshez hozzáadjuk a fegyverből generált random sebzést
+        // System.out.println("Min: " + min + " MAx: " + max + " fegyver sebzése: " + fegyversebzes + " Teljes sebzés: " + sebzes);
+
+        return sebzes;
     }
 
     public void Tamadas(Robot szenvedo) {
@@ -130,9 +179,11 @@ public abstract class Robot {
         // A támadó robot
         int damage = this.sebzes(); // 4
 
+        // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél tulajdonság + )
         System.out.print("🔥 " + this.nev + " megtámadja " + szenvedo.nev + " és " + damage + " sebzést okoz");
 
         if (szenvedo.getEletero() - damage >= 0) {
+            // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
             szenvedo.setEletero(szenvedo.getEletero() - damage); // 30-4
         } else {
             return;
@@ -141,12 +192,13 @@ public abstract class Robot {
         System.out.println(" " + szenvedo.nev + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
-        Gyogyulas(damage, 2);
+        Gyogyulas(damage);
     }
 
-    public void Gyogyulas(int damage, int heal) {
-        if (damage == this.sebzes) {
-            this.setEletero(this.getEletero() + heal);  // Max 40, Aktuális 32
+    public void Gyogyulas(int damage) {
+        if (damage == this.ero) {
+            // aktuális élet leht több, mint a max élet, ezért a maxélet + 
+            this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
 
             System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
             if (this.eletero > this.maxEletero) {

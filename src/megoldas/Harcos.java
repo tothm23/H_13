@@ -1,5 +1,7 @@
 package megoldas;
 
+import megoldas.Felszereles.Fegyver;
+
 /**
  *
  * @author Tóth Milán
@@ -7,12 +9,13 @@ package megoldas;
  */
 public class Harcos extends Robot {
 
-    public Harcos(String nev, String szin, Integer eletero, Boolean harcos, Integer sebzes) {
-        super(nev, szin, eletero, harcos, sebzes);
+    public Harcos(String nev, String szin, Integer eletero, Boolean harcos, Integer sebzes, Fegyver fegyver) {
+        super(nev, szin, eletero, harcos, sebzes, fegyver);
     }
 
     @Override
     public void Tamadas(Robot szenvedo) {
+       
         int sebzes = this.sebzes();
         int random = Robot.randomszam(10);
 
@@ -28,6 +31,6 @@ public class Harcos extends Robot {
         System.out.println(" " + szenvedo.getNev() + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
-        this.Gyogyulas(sebzes, 2);
+        this.Gyogyulas(sebzes);
     }
 }
