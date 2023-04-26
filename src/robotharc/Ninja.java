@@ -16,11 +16,13 @@ public class Ninja extends Robot {
     @Override
     public void Tamadas(Robot szenvedo) {
         int sebzes = this.sebzes();
+
+        // 10% esélye lesz kitérni egy támadás elől
         int random = Robot.randomszam(10);  // 0-9
 
         if (random == 2) {
             sebzes = 0;
-            System.out.println("Dodge!");
+            System.out.println("⚠️ Kitérés!");
             System.out.print("🔥 " + this.getNev() + " megtámadja " + szenvedo.getNev() + " és nem okoz neki sebzést\n");
         } else {
             System.out.print("🔥 " + this.getNev() + " megtámadja " + szenvedo.getNev() + " és " + sebzes + " sebzést okoz");
@@ -30,4 +32,16 @@ public class Ninja extends Robot {
         }
 
     }
+    /*
+    @Override
+    public void setEletero(int eletero) {
+        int generated = randomszam(10); // 0- 9
+        if (generated == 6) {
+            System.out.println("Kitérés");
+        } else {
+            this.eletero = eletero;
+        }
+    }
+     */
+
 }

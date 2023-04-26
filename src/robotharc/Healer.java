@@ -47,20 +47,24 @@ public class Healer extends Robot {
 
     }
      */
+    @Override
     public void Gyogyulas(int damage) {
+
         if (damage == this.ero) {
+
             this.setEletero(this.getEletero() + 2); // Max 40, Aktuális 48
             if (this.eletero > this.maxEletero) {
                 this.eletero = this.maxEletero;
             }
-            System.out.println(this.nev + " maxout sebzett, ezért gyógyult. új életereje: " + this.eletero);
+
+            System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
         }
 
         Random rand = new Random();
         int generated = rand.nextInt(20);
         if (generated == 4 && eletero != this.maxEletero) {
             eletero += 3;
-            System.err.println("KAPTÁL 3 ÉLETERŐT");
+            System.out.println("⚠️ Extra gyógyulás");
         }
 
     }

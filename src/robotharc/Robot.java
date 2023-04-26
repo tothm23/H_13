@@ -138,9 +138,7 @@ public abstract class Robot {
      * @return
      */
     public static int randomszam(int max) {
-        Random random = new Random();
-        int x = random.nextInt(max);
-        return x;
+        return new Random().nextInt(max);
     }
 
     /**
@@ -154,6 +152,11 @@ public abstract class Robot {
         return (int) Math.floor(Math.random() * (ig - tol + 1) + tol);
     }
 
+    /**
+     * A robotok sebzik egymást
+     *
+     * @return
+     */
     public int sebzes() {
         //return randomszam(this.ero + 1);
 
@@ -165,7 +168,7 @@ public abstract class Robot {
         int min = this.fegyver.getMinimumSebzes();  // 12  
         int range = max - min;  // 6
 
-        int fegyverSebzes = randomszam(range + 1);  // 0-5
+        int fegyverSebzes = randomszam(range + 1);  // 0-6
         fegyverSebzes += min;   // 0-6 + 12 -> 12 - 18
 
         sebzes += fegyverSebzes;   // Az erő értékekből számolt fix sebzéshez hozzáadjuk a fegyverből generált random sebzést
@@ -195,20 +198,32 @@ public abstract class Robot {
         Gyogyulas(damage);
     }
 
+    /**
+     * Minden támadás után gyógyulnak a robotok
+     *
+     * @param damage
+     */
     public void Gyogyulas(int damage) {
         if (damage == this.ero) {
             // aktuális élet leht több, mint a max élet, ezért a maxélet + 
             this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
 
-            System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
             if (this.eletero > this.maxEletero) {
                 this.eletero = this.maxEletero;
             }
+            System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
         }
 
     }
 
+    /**
+     * A harc, ami az egyik robot haláláig tart
+     *
+     * @param robot1
+     * @param robot2
+     */
     public static void Harc(Robot robot1, Robot robot2) {
+        // Akkor harcolnak egymással, ha mindkét robot harcos
         if (Harcosok(robot1, robot2)) {
             Robot kezdorobot = Kezdorobot(robot1, robot2);
             boolean jatek = true;
@@ -289,6 +304,11 @@ public abstract class Robot {
 
     }
 
+    /**
+     * Bajnokság, 8 robot között
+     *
+     * @param robotok
+     */
     public static void Robotbajnoksag(ArrayList<Robot> robotok) {
 
         boolean bajnoksag = true;
@@ -302,7 +322,7 @@ public abstract class Robot {
                 bajnoksag = false;
             }
         }
-        // CSak akkor lehet bajnokság, ha minden robot harcos
+        // Csak akkor lehet bajnokság, ha minden robot harcos
         if (bajnoksag) {
             // A robotok akik bejutottak al elődöntőbe 5 életet kapnak
             Robot elodontosA = Gyoztes(robotok.get(0), robotok.get(1));

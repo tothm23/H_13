@@ -15,7 +15,6 @@ import robotharc.Felszereles.Fegyver;
 public class Robotharc {
 
     public static void main(String[] args) {
-        ArrayList<Robot> robotok = new ArrayList<>();
 
         Fegyver kard = new Fegyver("kard", 4, 8, 2);
         Fegyver tor = new Fegyver("tőr", 5, 7, 3);
@@ -26,6 +25,9 @@ public class Robotharc {
         Robot.Harc(r1, r2);
         /*
         // Robotbajnokság
+        
+         ArrayList<Robot> robotok = new ArrayList<>();
+        
         robotok.add(new Harcos("Robi", "piros", 100, true, 10, kard));
         robotok.add(new Healer("Zsolti", "zöld", 80, true, 5, tor));
         robotok.add(new Ninja("Laci", "kék", 120, true, 15, kard));

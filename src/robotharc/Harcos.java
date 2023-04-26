@@ -15,13 +15,13 @@ public class Harcos extends Robot {
 
     @Override
     public void Tamadas(Robot szenvedo) {
-       
+
         int sebzes = this.sebzes();
         int random = Robot.randomszam(10);
 
         if (random == 2) {
             sebzes += 2;
-            System.out.println("Kritikus sebzés");
+            System.out.println("⚠️ Kritikus sebzés");
         } else {
         }
 
