@@ -9,7 +9,7 @@ import robotharc.Felszereles.Fegyver;
  */
 public class Gyogyito extends Robot {
 
-    public Gyogyito(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
+    public Gyogyito(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
         super(nev, szin, eletero, harcose, sebzes, fegyver);
     }
 
@@ -57,7 +57,7 @@ public class Gyogyito extends Robot {
                 this.eletero = this.maxEletero;
             }
 
-            System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
+            System.out.println("\n🖤 " + this.szin.get() + this.nev + Szin.VISSZA.get() + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
         }
 
         Random rand = new Random();

@@ -15,13 +15,12 @@ import robotharc.Felszereles.Fegyver;
 public class Robotharc {
 
     public static void main(String[] args) {
-       
 
         Fegyver kard = new Fegyver("kard", 4, 8, 2);
         Fegyver tor = new Fegyver("tőr", 5, 7, 3);
 
-        Robot r1 = new Harcos("kecsketron", "fekete", 55, true, 2, kard);   // 6-12 között sebez, vagy a dupláját ha kritikus támadás
-        Robot r2 = new Ninja("elektron", "fehér", 55, true, 2, tor);    // 8-12 között sebez
+        Robot r1 = new Harcos("kecsketron", Szin.PIROS, 55, true, 2, kard);   // 6-12 között sebez, vagy a dupláját ha kritikus támadás
+        Robot r2 = new Ninja("elektron", Szin.KEK, 55, true, 2, tor);    // 8-12 között sebez
 
         Robot.Harc(r1, r2);
         /*

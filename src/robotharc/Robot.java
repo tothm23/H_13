@@ -11,7 +11,7 @@ import robotharc.Felszereles.Fegyver;
 public abstract class Robot {
 
     protected String nev;
-    protected String szin;
+    protected Szin szin;
     protected Integer eletero;
     protected int maxEletero;
     protected boolean harcose;
@@ -21,7 +21,7 @@ public abstract class Robot {
     // tárgyak
     protected Fegyver fegyver;
 
-    public Robot(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
+    public Robot(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
         this.nev = nev;
         this.szin = szin;
         this.eletero = eletero; // bemenő paraméter + páncél által adott életerő
@@ -39,11 +39,11 @@ public abstract class Robot {
         this.nev = nev;
     }
 
-    public String getSzin() {
+    public Szin getSzin() {
         return szin;
     }
 
-    public void setSzin(String szin) {
+    public void setSzin(Szin szin) {
         this.szin = szin;
     }
 
@@ -183,7 +183,7 @@ public abstract class Robot {
         int sebzes = this.sebzes(); // 4
 
         // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél tulajdonság + )
-        System.out.print("🔥 " + this.nev + " megtámadja " + szenvedo.nev + " és " + sebzes + " sebzést okoz");
+        System.out.print("🔥 " + szin.get() + this.nev + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
 
         if (szenvedo.getEletero() - sebzes >= 0) {
             // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
@@ -192,7 +192,7 @@ public abstract class Robot {
             return;
         }
 
-        System.out.println(" " + szenvedo.nev + " életereje " + szenvedo.getEletero() + " lett");
+        System.out.println(" " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
         Gyogyulas(sebzes);
@@ -211,7 +211,7 @@ public abstract class Robot {
             if (this.eletero > this.maxEletero) {
                 this.eletero = this.maxEletero;
             }
-            System.out.println("\n🖤 " + this.nev + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
+            System.out.println("\n🖤 " + szin.get() + this.nev + Szin.VISSZA.get() + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
         }
 
     }

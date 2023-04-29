@@ -9,7 +9,7 @@ import robotharc.Felszereles.Fegyver;
  */
 public class Harcos extends Robot {
 
-    public Harcos(String nev, String szin, Integer eletero, Boolean harcos, Integer sebzes, Fegyver fegyver) {
+    public Harcos(String nev, Szin szin, Integer eletero, Boolean harcos, Integer sebzes, Fegyver fegyver) {
         super(nev, szin, eletero, harcos, sebzes, fegyver);
     }
 
@@ -25,10 +25,10 @@ public class Harcos extends Robot {
         } else {
         }
 
-        System.out.print("🔥 " + this.getNev() + " megtámadja " + szenvedo.getNev() + " és " + sebzes + " sebzést okoz");
+        System.out.print("🔥 " + this.szin.get() + this.getNev() + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
         szenvedo.setEletero(szenvedo.getEletero() - sebzes); // 30-4
 
-        System.out.println(" " + szenvedo.getNev() + " életereje " + szenvedo.getEletero() + " lett");
+        System.out.println(" " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
         this.Gyogyulas(sebzes);
