@@ -5,7 +5,7 @@ package robotharc;
  * @author Tóth Milán
  *
  */
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import robotharc.Felszereles.Fegyver;
 
 /**
@@ -15,6 +15,7 @@ import robotharc.Felszereles.Fegyver;
 public class Robotharc {
 
     public static void main(String[] args) {
+       
 
         Fegyver kard = new Fegyver("kard", 4, 8, 2);
         Fegyver tor = new Fegyver("tőr", 5, 7, 3);

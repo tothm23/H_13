@@ -180,14 +180,14 @@ public abstract class Robot {
     public void Tamadas(Robot szenvedo) {
 
         // A támadó robot
-        int damage = this.sebzes(); // 4
+        int sebzes = this.sebzes(); // 4
 
         // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél tulajdonság + )
-        System.out.print("🔥 " + this.nev + " megtámadja " + szenvedo.nev + " és " + damage + " sebzést okoz");
+        System.out.print("🔥 " + this.nev + " megtámadja " + szenvedo.nev + " és " + sebzes + " sebzést okoz");
 
-        if (szenvedo.getEletero() - damage >= 0) {
+        if (szenvedo.getEletero() - sebzes >= 0) {
             // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
-            szenvedo.setEletero(szenvedo.getEletero() - damage); // 30-4
+            szenvedo.setEletero(szenvedo.getEletero() - sebzes); // 30-4
         } else {
             return;
         }
@@ -195,16 +195,16 @@ public abstract class Robot {
         System.out.println(" " + szenvedo.nev + " életereje " + szenvedo.getEletero() + " lett");
 
         // Minden támadás után gyógyulnak a robotok
-        Gyogyulas(damage);
+        Gyogyulas(sebzes);
     }
 
     /**
      * Minden támadás után gyógyulnak a robotok
      *
-     * @param damage
+     * @param sebzes
      */
-    public void Gyogyulas(int damage) {
-        if (damage == this.ero) {
+    public void Gyogyulas(int sebzes) {
+        if (sebzes == this.ero) {
             // aktuális élet leht több, mint a max élet, ezért a maxélet + 
             this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
 

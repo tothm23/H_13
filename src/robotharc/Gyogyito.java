@@ -7,9 +7,9 @@ import robotharc.Felszereles.Fegyver;
  *
  * @author Tóth Milán
  */
-public class Healer extends Robot {
+public class Gyogyito extends Robot {
 
-    public Healer(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
+    public Gyogyito(String nev, String szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
         super(nev, szin, eletero, harcose, sebzes, fegyver);
     }
 
@@ -48,9 +48,9 @@ public class Healer extends Robot {
     }
      */
     @Override
-    public void Gyogyulas(int damage) {
+    public void Gyogyulas(int serules) {
 
-        if (damage == this.ero) {
+        if (serules == this.ero) {
 
             this.setEletero(this.getEletero() + 2); // Max 40, Aktuális 48
             if (this.eletero > this.maxEletero) {
