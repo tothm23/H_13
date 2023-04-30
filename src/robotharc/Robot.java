@@ -7,6 +7,8 @@ package robotharc;
 import java.util.ArrayList;
 import java.util.Random;
 import robotharc.Felszereles.Fegyver;
+import robotharc.Felszereles.Pancel;
+import robotharc.Hiba.RobotHiba;
 
 public abstract class Robot {
 
@@ -20,8 +22,12 @@ public abstract class Robot {
     // páncél/védelmi pont (nem muszály, leht 0))
     // tárgyak
     protected Fegyver fegyver;
+    protected Pancel pancel;
 
-    public Robot(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
+    public Robot(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver, Pancel pancel) throws RobotHiba {
+        if (nev.equalsIgnoreCase("")) {
+            throw new RobotHiba("A robot neve nem lehet üres!");
+        }
         this.nev = nev;
         this.szin = szin;
         this.eletero = eletero; // bemenő paraméter + páncél által adott életerő
@@ -29,13 +35,17 @@ public abstract class Robot {
         this.harcose = harcose;
         this.ero = sebzes;
         this.fegyver = fegyver;
+        this.pancel = pancel;
     }
 
     public String getNev() {
         return nev;
     }
 
-    public void setNev(String nev) {
+    public void setNev(String nev) throws RobotHiba {
+        if (nev.equalsIgnoreCase("")) {
+            throw new RobotHiba("A robot neve nem lehet üres!");
+        }
         this.nev = nev;
     }
 
@@ -138,6 +148,7 @@ public abstract class Robot {
      * @return
      */
     public static int randomszam(int max) {
+        // nextInt(10) 0-9
         return new Random().nextInt(max);
     }
 
@@ -166,9 +177,9 @@ public abstract class Robot {
 
         int max = this.fegyver.getMaximumSebzes();  // 18
         int min = this.fegyver.getMinimumSebzes();  // 12  
-        int range = max - min;  // 6
+        int tartomany = max - min;  // 6
 
-        int fegyverSebzes = randomszam(range + 1);  // 0-6
+        int fegyverSebzes = randomszam(tartomany + 1);  // 0-6
         fegyverSebzes += min;   // 0-6 + 12 -> 12 - 18
 
         sebzes += fegyverSebzes;   // Az erő értékekből számolt fix sebzéshez hozzáadjuk a fegyverből generált random sebzést
@@ -182,12 +193,15 @@ public abstract class Robot {
         // A támadó robot
         int sebzes = this.sebzes(); // 4
 
-        // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél tulajdonság + )
+        // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél ltulajdonság + páncél tárgy védelme)
         System.out.print("🔥 " + szin.get() + this.nev + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
 
         if (szenvedo.getEletero() - sebzes >= 0) {
             // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
-            szenvedo.setEletero(szenvedo.getEletero() - sebzes); // 30-4
+            szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
+
+            // A páncél tartosságából lejön a kivédett sebzés értéke
+            szenvedo.pancel.setTartossag(szenvedo.pancel.getTartossag() - szenvedo.pancel.getVedelem());
         } else {
             return;
         }
@@ -205,10 +219,10 @@ public abstract class Robot {
      */
     public void Gyogyulas(int sebzes) {
         if (sebzes == this.ero) {
-            // aktuális élet leht több, mint a max élet, ezért a maxélet + 
-            this.setEletero(this.getEletero() + 2);  // Max 40, Aktuális 32
+            // Aktuális élet lehet több mint a max élet, ezéret a maxélet + páncél életereje értékkel kell dolgozni
+            this.setEletero(this.getEletero() + 2 + this.pancel.getVedelem()); // Max 40, Aktuális 48
 
-            if (this.eletero > this.maxEletero) {
+            if (this.eletero > this.maxEletero + this.pancel.getVedelem()) {
                 this.eletero = this.maxEletero;
             }
             System.out.println("\n🖤 " + szin.get() + this.nev + Szin.VISSZA.get() + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");

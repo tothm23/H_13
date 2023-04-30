@@ -7,6 +7,10 @@ package robotharc;
  */
 // import java.util.ArrayList;
 import robotharc.Felszereles.Fegyver;
+import robotharc.Felszereles.Pancel;
+import robotharc.Hiba.FegyverHiba;
+import robotharc.Hiba.PancelHiba;
+import robotharc.Hiba.RobotHiba;
 
 /**
  *
@@ -16,13 +20,18 @@ public class Robotharc {
 
     public static void main(String[] args) {
 
-        Fegyver kard = new Fegyver("kard", 4, 8, 2);
-        Fegyver tor = new Fegyver("tőr", 5, 7, 3);
+        try {
+            Fegyver kard = new Fegyver("kard", 4, 8, 2);
+            Fegyver tor = new Fegyver("tőr", 5, 7, 3);
+            Pancel pajzs = new Pancel("pajzs", 4, 20);
 
-        Robot r1 = new Harcos("kecsketron", Szin.PIROS, 55, true, 2, kard);   // 6-12 között sebez, vagy a dupláját ha kritikus támadás
-        Robot r2 = new Ninja("elektron", Szin.KEK, 55, true, 2, tor);    // 8-12 között sebez
+            Robot r1 = new Harcos("kecsketron", Szin.PIROS, 55, true, 2, kard, pajzs);   // 6-12 között sebez, vagy a dupláját ha kritikus támadás
+            Robot r2 = new Ninja("elektron", Szin.KEK, 55, true, 2, tor, pajzs);    // 8-12 között sebez
+            Robot.Harc(r1, r2);
+        } catch (RobotHiba | FegyverHiba | PancelHiba h) {
+            System.err.println(h.getMessage());
+        }
 
-        Robot.Harc(r1, r2);
         /*
         // Robotbajnokság
         

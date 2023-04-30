@@ -1,7 +1,8 @@
 package robotharc;
 
-import java.util.Random;
 import robotharc.Felszereles.Fegyver;
+import robotharc.Felszereles.Pancel;
+import robotharc.Hiba.RobotHiba;
 
 /**
  *
@@ -9,8 +10,8 @@ import robotharc.Felszereles.Fegyver;
  */
 public class Gyogyito extends Robot {
 
-    public Gyogyito(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
-        super(nev, szin, eletero, harcose, sebzes, fegyver);
+    public Gyogyito(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver, Pancel pancel) throws RobotHiba {
+        super(nev, szin, eletero, harcose, sebzes, fegyver, pancel);
     }
 
     /*
@@ -52,16 +53,17 @@ public class Gyogyito extends Robot {
 
         if (serules == this.ero) {
 
-            this.setEletero(this.getEletero() + 2); // Max 40, Aktuális 48
-            if (this.eletero > this.maxEletero) {
+            // Aktuális élet lehet több mint a max élet, ezéret a maxélet + páncél életereje értékkel kell dolgozni
+            this.setEletero(this.getEletero() + 2 + this.pancel.getVedelem()); // Max 40, Aktuális 48
+
+            if (this.eletero > this.maxEletero + this.pancel.getVedelem()) {
                 this.eletero = this.maxEletero;
             }
 
             System.out.println("\n🖤 " + this.szin.get() + this.nev + Szin.VISSZA.get() + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
         }
 
-        Random rand = new Random();
-        int generated = rand.nextInt(20);
+        int generated = Robot.randomszam(20);
         if (generated == 4 && eletero != this.maxEletero) {
             eletero += 3;
             System.out.println("⚠️ Extra gyógyulás");

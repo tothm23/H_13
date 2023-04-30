@@ -1,6 +1,8 @@
 package robotharc;
 
 import robotharc.Felszereles.Fegyver;
+import robotharc.Felszereles.Pancel;
+import robotharc.Hiba.RobotHiba;
 
 /**
  *
@@ -9,8 +11,8 @@ import robotharc.Felszereles.Fegyver;
  */
 public class Ninja extends Robot {
 
-    public Ninja(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver) {
-        super(nev, szin, eletero, harcose, sebzes, fegyver);
+    public Ninja(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver, Pancel pancel) throws RobotHiba {
+        super(nev, szin, eletero, harcose, sebzes, fegyver, pancel);
     }
 
     @Override
@@ -26,7 +28,12 @@ public class Ninja extends Robot {
             System.out.print("🔥 " + this.szin.get() + this.getNev() + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " és nem okoz neki sebzést\n");
         } else {
             System.out.print("🔥 " + this.szin.get() + this.getNev() + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
-            szenvedo.setEletero(szenvedo.getEletero() - sebzes); // 30-4
+
+            // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
+            szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
+
+            // A páncél tartosságából lejön a kivédett sebzés értéke
+            szenvedo.pancel.setTartossag(szenvedo.pancel.getTartossag() - szenvedo.pancel.getVedelem());
 
             System.out.println(" " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " életereje " + szenvedo.getEletero() + " lett");
         }
