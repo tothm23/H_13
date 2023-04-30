@@ -29,7 +29,7 @@ public class Harcos extends Robot {
 
         System.out.print("🔥 " + this.szin.get() + this.getNev() + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
 
-        if (szenvedo.getEletero() - sebzes >= 0) {
+        if (szenvedo.getEletero() >= 0) {
             // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
             szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
 

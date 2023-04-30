@@ -196,7 +196,7 @@ public abstract class Robot {
         // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél ltulajdonság + páncél tárgy védelme)
         System.out.print("🔥 " + szin.get() + this.nev + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
 
-        if (szenvedo.getEletero() - sebzes >= 0) {
+        if (szenvedo.getEletero() >= 0) {
             // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
             szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
 

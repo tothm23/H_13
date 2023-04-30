@@ -29,11 +29,15 @@ public class Ninja extends Robot {
         } else {
             System.out.print("🔥 " + this.szin.get() + this.getNev() + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
 
-            // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
-            szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
+            if (szenvedo.getEletero() >= 0) {
+                // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
+                szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
 
-            // A páncél tartosságából lejön a kivédett sebzés értéke
-            szenvedo.pancel.setTartossag(szenvedo.pancel.getTartossag() - szenvedo.pancel.getVedelem());
+                // A páncél tartosságából lejön a kivédett sebzés értéke
+                szenvedo.pancel.setTartossag(szenvedo.pancel.getTartossag() - szenvedo.pancel.getVedelem());
+            } else {
+                return;
+            }
 
             System.out.println(" " + szenvedo.getSzin().get() + szenvedo.getNev() + Szin.VISSZA.get() + " életereje " + szenvedo.getEletero() + " lett");
         }
