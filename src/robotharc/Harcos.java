@@ -1,5 +1,6 @@
 package robotharc;
 
+import robotharc.Felszereles.Cipo;
 import robotharc.Felszereles.Fegyver;
 import robotharc.Felszereles.Pancel;
 import robotharc.Felszereles.Sisak;
@@ -12,8 +13,8 @@ import robotharc.Hiba.RobotHiba;
  */
 public class Harcos extends Robot {
 
-    public Harcos(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pance, Sisak sisak) throws RobotHiba {
-        super(nev, szin, eletero, harcose, sebzes, vedelem, fegyver, pance, sisak);
+    public Harcos(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pancel, Sisak sisak, Cipo cipo) throws RobotHiba {
+        super(nev, szin, eletero, harcose, sebzes, vedelem, fegyver, pancel, sisak, cipo);
     }
 
     @Override

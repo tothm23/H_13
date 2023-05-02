@@ -6,9 +6,11 @@ package robotharc;
  *
  */
 // import java.util.ArrayList;
+import robotharc.Felszereles.Cipo;
 import robotharc.Felszereles.Fegyver;
 import robotharc.Felszereles.Pancel;
 import robotharc.Felszereles.Sisak;
+import robotharc.Hiba.CipoHiba;
 import robotharc.Hiba.FegyverHiba;
 import robotharc.Hiba.PancelHiba;
 import robotharc.Hiba.RobotHiba;
@@ -28,12 +30,13 @@ public class Robotharc {
 
             Pancel vert = new Pancel("vért", 5, 10);
             Sisak sisak = new Sisak("sisak", 1, 1);
+            Cipo cipo = new Cipo("bakancs", 2, 2);
 
-            Robot r1 = new Harcos("kecsketron", Szin.PIROS, 550, true, 2, 4, kard, vert, sisak); // 6-12 között sebez, vagy a dupláját ha kritikus támadás
-            Robot r2 = new Ninja("elektron", Szin.KEK, 550, true, 2, 4, tor, vert, sisak); // 8-12 között sebez
+            Robot r1 = new Harcos("kecsketron", Szin.PIROS, 550, true, 2, 4, kard, vert, sisak, cipo); // 6-12 között sebez, vagy a dupláját ha kritikus támadás
+            Robot r2 = new Ninja("elektron", Szin.KEK, 550, true, 2, 4, tor, vert, sisak, cipo); // 8-12 között sebez
 
             Robot.Harc(r1, r2);
-        } catch (RobotHiba | FegyverHiba | PancelHiba | SisakHiba hiba) {
+        } catch (RobotHiba | FegyverHiba | PancelHiba | SisakHiba | CipoHiba hiba) {
             System.err.println(hiba.getMessage());
         }
 

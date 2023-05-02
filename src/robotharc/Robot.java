@@ -6,6 +6,7 @@ package robotharc;
  */
 import java.util.ArrayList;
 import java.util.Random;
+import robotharc.Felszereles.Cipo;
 import robotharc.Felszereles.Fegyver;
 import robotharc.Felszereles.Pancel;
 import robotharc.Felszereles.Sisak;
@@ -26,27 +27,29 @@ public abstract class Robot {
     protected Fegyver fegyver;
     protected Pancel pancel;
     protected Sisak sisak;
+    protected Cipo cipo;
 
-    public Robot(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pancel, Sisak sisak) throws RobotHiba {
+    public Robot(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pancel, Sisak sisak, Cipo cipo) throws RobotHiba {
         if (nev.equalsIgnoreCase("")) {
             throw new RobotHiba("A robot neve nem lehet üres!");
         }
         this.nev = nev;
         this.szin = szin;
 
-        // bemenő paraméter + páncél és sisak álltal adott életerő
-        this.eletero = eletero + pancel.getEletero() + sisak.getEletero();
+        // bemenő paraméter + páncél, sisak, cipő álltal adott életerő
+        this.eletero = eletero + pancel.getEletero() + sisak.getEletero() + cipo.getEletero();
 
         this.maxEletero = eletero;
         this.harcose = harcose;
         this.ero = sebzes;
 
-        // bemenő paraméter + páncél és sisak álltal adott védelem
-        this.vedelem = vedelem + pancel.getVedelem() + sisak.getVedelem();
+        // bemenő paraméter + páncél, sisak, cipő álltal adott védelem
+        this.vedelem = vedelem + pancel.getVedelem() + sisak.getVedelem() + cipo.getEletero();
 
         this.fegyver = fegyver;
         this.pancel = pancel;
         this.sisak = sisak;
+        this.cipo = cipo;
     }
 
     public String getNev() {
