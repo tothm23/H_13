@@ -21,12 +21,14 @@ public class Robotharc {
     public static void main(String[] args) {
 
         try {
-            Fegyver kard = new Fegyver("kard", 4, 8, 2);
-            Fegyver tor = new Fegyver("tőr", 5, 7, 3);
-            Pancel pajzs = new Pancel("pajzs", 4, 20);
+            Fegyver kard = new Fegyver("kard", 4, 80, 2);
+            Fegyver tor = new Fegyver("tőr", 5, 70, 3);
 
-            Robot r1 = new Harcos("kecsketron", Szin.PIROS, 55, true, 2, kard, pajzs);   // 6-12 között sebez, vagy a dupláját ha kritikus támadás
-            Robot r2 = new Ninja("elektron", Szin.KEK, 55, true, 2, tor, pajzs);    // 8-12 között sebez
+            Pancel vert = new Pancel("vért", 5, 10);
+
+            Robot r1 = new Harcos("kecsketron", Szin.PIROS, 550, true, 2, 4, kard, vert); // 6-12 között sebez, vagy a dupláját ha kritikus támadás
+            Robot r2 = new Ninja("elektron", Szin.KEK, 550, true, 2, 4, tor, vert); // 8-12 között sebez
+
             Robot.Harc(r1, r2);
         } catch (RobotHiba | FegyverHiba | PancelHiba h) {
             System.err.println(h.getMessage());

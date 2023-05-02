@@ -18,22 +18,30 @@ public abstract class Robot {
     protected int maxEletero;
     protected boolean harcose;
     protected Integer ero;
+    protected Integer vedelem;
 
     // páncél/védelmi pont (nem muszály, leht 0))
     // tárgyak
     protected Fegyver fegyver;
     protected Pancel pancel;
 
-    public Robot(String nev, Szin szin, int eletero, boolean harcose, int sebzes, Fegyver fegyver, Pancel pancel) throws RobotHiba {
+    public Robot(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pancel) throws RobotHiba {
         if (nev.equalsIgnoreCase("")) {
             throw new RobotHiba("A robot neve nem lehet üres!");
         }
         this.nev = nev;
         this.szin = szin;
-        this.eletero = eletero; // bemenő paraméter + páncél által adott életerő
+
+        // bemenő paraméter + páncél álltal adott életerő
+        this.eletero = eletero + pancel.getEletero();
+
         this.maxEletero = eletero;
         this.harcose = harcose;
         this.ero = sebzes;
+
+        // bemenő paraméter + páncél álltal adott védelem
+        this.vedelem = vedelem + pancel.getVedelem();
+
         this.fegyver = fegyver;
         this.pancel = pancel;
     }
@@ -87,6 +95,14 @@ public abstract class Robot {
 
     public void setEro(int sebzes) {
         this.ero = sebzes;
+    }
+
+    public Integer getVedelem() {
+        return vedelem;
+    }
+
+    public void setVedelem(Integer vedelem) {
+        this.vedelem = vedelem;
     }
 
     /**
@@ -188,22 +204,36 @@ public abstract class Robot {
         return sebzes;
     }
 
+    /**
+     * A kezdő robot megtámadja a másikat, majd fordítva
+     *
+     * @param szenvedo
+     */
     public void Tamadas(Robot szenvedo) {
 
         // A támadó robot
-        int sebzes = this.sebzes(); // 4
+        int sebzes = this.sebzes(); //12
+        int vedelem = szenvedo.getVedelem(); // 8
+
+        // Ezt külön kell tárolni, mert a Gyógyuláshoz kell
+        int tenylegesSebzes = sebzes - vedelem;
+
+        // Nem engedjük, hogy -okat sebezzen
+        if (tenylegesSebzes < 0) {
+            tenylegesSebzes = 0;
+        }
 
         // Védekező robot páncél/ védelmi pont értékének kiszámolása (páncél ltulajdonság + páncél tárgy védelme)
-        System.out.print("🔥 " + szin.get() + this.nev + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " és " + sebzes + " sebzést okoz");
+        System.out.print(Szin.SARGA.get() + "🔥 " + Szin.VISSZA.get() + szin.get() + this.nev + Szin.VISSZA.get() + " megtámadja " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " és " + tenylegesSebzes + " sebzést okoz");
 
         if (szenvedo.getEletero() >= 0) {
             // Nem a sebzés, hanem a sebzés - páncél értéket vonjuk ki
             szenvedo.setEletero(szenvedo.getEletero() - (sebzes - szenvedo.pancel.getVedelem())); // 30-4
 
             // A páncél tartosságából lejön a kivédett sebzés értéke
-            szenvedo.pancel.setTartossag(szenvedo.pancel.getTartossag() - szenvedo.pancel.getVedelem());
+            // szenvedo.pancel.setTartossag(szenvedo.pancel.getTartossag() - szenvedo.pancel.getVedelem());
         } else {
-            return;
+
         }
 
         System.out.println(" " + szenvedo.getSzin().get() + szenvedo.nev + Szin.VISSZA.get() + " életereje " + szenvedo.getEletero() + " lett");
@@ -220,9 +250,9 @@ public abstract class Robot {
     public void Gyogyulas(int sebzes) {
         if (sebzes == this.ero) {
             // Aktuális élet lehet több mint a max élet, ezéret a maxélet + páncél életereje értékkel kell dolgozni
-            this.setEletero(this.getEletero() + 2 + this.pancel.getVedelem()); // Max 40, Aktuális 48
+            this.setEletero(this.getEletero() + 2); // Max 40, Aktuális 48
 
-            if (this.eletero > this.maxEletero + this.pancel.getVedelem()) {
+            if (this.eletero > this.maxEletero) {
                 this.eletero = this.maxEletero;
             }
             System.out.println("\n🖤 " + szin.get() + this.nev + Szin.VISSZA.get() + " maximálisat sebzett, ezért gyógyult. Új életereje: " + this.eletero + "\n");
@@ -239,13 +269,15 @@ public abstract class Robot {
     public static void Harc(Robot robot1, Robot robot2) {
         // Akkor harcolnak egymással, ha mindkét robot harcos
         if (Harcosok(robot1, robot2)) {
+
             Robot kezdorobot = Kezdorobot(robot1, robot2);
             boolean jatek = true;
+
             while (jatek) {
                 if (kezdorobot.equals(robot1)) {
                     robot1.Tamadas(robot2);
-                    if (robot2.eletero <= 0) {
-                        System.out.println("Gyöztes: " + robot1.nev);
+                    if (robot2.eletero <= 0 || robot1.eletero <= 0) {
+                        System.out.println(Szin.SARGA.get() + "\n🏆 " + Szin.VISSZA.get() + "A bajnok nem más, mint " + robot1.getSzin().get() + robot1.getNev() + Szin.VISSZA.get() + "! \n");
                         jatek = false;
                     } else {
                         robot2.Tamadas(robot1);
@@ -253,8 +285,8 @@ public abstract class Robot {
 
                 } else {
                     robot2.Tamadas(robot1);
-                    if (robot1.eletero <= 0) {
-                        System.out.println("Gyöztes: " + robot2.nev);
+                    if (robot1.eletero <= 0 || robot2.eletero <= 0) {
+                        System.out.println(Szin.SARGA.get() + "\n🏆 " + Szin.VISSZA.get() + "A bajnok nem más, mint " + robot1.getSzin().get() + robot2.getNev() + Szin.VISSZA.get() + "! \n");
                         jatek = false;
                     } else {
                         robot1.Tamadas(robot2);

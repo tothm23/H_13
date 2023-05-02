@@ -1,21 +1,16 @@
 package robotharc.Felszereles;
 
-import robotharc.Hiba.PancelHiba;
-
 /**
  *
  * @author Tóth Milán
  */
-public class Pancel {
+public class Sisak {
 
     private String nev;
     private Integer eletero;
     private Integer vedelem;
 
-    public Pancel(String nev, Integer eletero, Integer vedelem) throws PancelHiba {
-        if (nev.equalsIgnoreCase("")) {
-            throw new PancelHiba("A páncél neve nem lehet üres!");
-        }
+    public Sisak(String nev, Integer eletero, Integer vedelem) {
         this.nev = nev;
         this.eletero = eletero;
         this.vedelem = vedelem;
@@ -25,10 +20,7 @@ public class Pancel {
         return nev;
     }
 
-    public void setNev(String nev) throws PancelHiba {
-        if (nev.equalsIgnoreCase("")) {
-            throw new PancelHiba("A páncél neve nem lehet üres!");
-        }
+    public void setNev(String nev) {
         this.nev = nev;
     }
 
