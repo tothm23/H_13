@@ -27,6 +27,9 @@ public class Fegyver {
         if (minimumSebzes > maximumSebzes) {
             throw new FegyverHiba("A fegyver minimm sebzése nem lehet negyobb, mint a maximum sebzése!");
         }
+        if (ero <= 0) {
+            throw new FegyverHiba("A fegyver ereje nem lehet kisebb vagy egyenlő, mint 0!");
+        }
         this.nev = nev;
         this.minimumSebzes = minimumSebzes;
         this.maximumSebzes = maximumSebzes;

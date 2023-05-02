@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import robotharc.Felszereles.Fegyver;
 import robotharc.Felszereles.Pancel;
+import robotharc.Felszereles.Sisak;
 import robotharc.Hiba.RobotHiba;
 
 public abstract class Robot {
@@ -24,26 +25,28 @@ public abstract class Robot {
     // tárgyak
     protected Fegyver fegyver;
     protected Pancel pancel;
+    protected Sisak sisak;
 
-    public Robot(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pancel) throws RobotHiba {
+    public Robot(String nev, Szin szin, Integer eletero, Boolean harcose, Integer sebzes, Integer vedelem, Fegyver fegyver, Pancel pancel, Sisak sisak) throws RobotHiba {
         if (nev.equalsIgnoreCase("")) {
             throw new RobotHiba("A robot neve nem lehet üres!");
         }
         this.nev = nev;
         this.szin = szin;
 
-        // bemenő paraméter + páncél álltal adott életerő
-        this.eletero = eletero + pancel.getEletero();
+        // bemenő paraméter + páncél és sisak álltal adott életerő
+        this.eletero = eletero + pancel.getEletero() + sisak.getEletero();
 
         this.maxEletero = eletero;
         this.harcose = harcose;
         this.ero = sebzes;
 
-        // bemenő paraméter + páncél álltal adott védelem
-        this.vedelem = vedelem + pancel.getVedelem();
+        // bemenő paraméter + páncél és sisak álltal adott védelem
+        this.vedelem = vedelem + pancel.getVedelem() + sisak.getVedelem();
 
         this.fegyver = fegyver;
         this.pancel = pancel;
+        this.sisak = sisak;
     }
 
     public String getNev() {
